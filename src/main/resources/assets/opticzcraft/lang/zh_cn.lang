@@ -1,0 +1,7 @@
+itemGroup.opticzCraft=opticzCraft
+
+tile.LaserJet.name=激光器
+tile.LaserDet.name=探测器
+tile.LaserPbs.name=分光器
+tile.LaserRec.name=接收器
+tile.LaserRef.name=反射器

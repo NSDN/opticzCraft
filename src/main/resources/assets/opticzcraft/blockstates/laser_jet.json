@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "opticzcraft:laser_jet"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "north": {  },
+      "east": { "y": 90 },
+      "south": { "y": 180 },
+      "west": { "y": 270 },
+      "up": { "x": -90 },
+      "down": { "x": 90 }
+    },
+    "lighted": {
+      "true": {  },
+      "false": {  }
+    }
+  }
+}

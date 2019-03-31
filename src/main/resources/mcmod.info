@@ -1,0 +1,17 @@
+[
+{
+  "modid": "opticzcraft",
+  "name": "opticzCraft",
+  "description": "opticzCraft mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://dev.nyasama.com/nsmc",
+  "updateUrl": "",
+  "authorList": ["drzzm32"],
+  "credits": "Copyright (C) NSDN 2014 - 2019",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "parent": "nyasamaoptics",
+  "dependencies": ["nyasamaoptics"]
+}
+]
