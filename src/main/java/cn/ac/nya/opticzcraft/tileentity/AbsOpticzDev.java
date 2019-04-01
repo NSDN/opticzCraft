@@ -64,7 +64,7 @@ public abstract class AbsOpticzDev extends TileEntity implements IOpticzDev {
         return LASER_DEFAULT_POWER;
     }
 
-    protected void calcInput(EnumFacing facing) {
+    public void calcInput(EnumFacing facing) {
         int result = 0;
         if (!inputs.get(facing).isEmpty()) {
             for (Wave wave : inputs.get(facing).values())

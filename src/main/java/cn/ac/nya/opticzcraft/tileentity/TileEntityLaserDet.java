@@ -34,6 +34,8 @@ public class TileEntityLaserDet extends AbsOpticzDev {
                         }
                     }
                     IOpticzDev.perform(world, pos, target, this.getOutput(target));
+                } else {
+                    this.calcInput(f);
                 }
             }
         }

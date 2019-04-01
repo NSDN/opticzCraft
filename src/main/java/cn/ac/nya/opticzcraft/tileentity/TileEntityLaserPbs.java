@@ -65,6 +65,8 @@ public class TileEntityLaserPbs extends AbsOpticzDev {
                         }
                     }
                 }
+            } else {
+                this.calcInput(f);
             }
         }
         IOpticzDev.perform(world, pos, facing, this.getOutput(facing));

@@ -1,7 +1,6 @@
 package cn.ac.nya.opticzcraft.tileentity;
 
 import cn.ac.nya.opticzcraft.api.IOpticzDev;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3i;
@@ -35,6 +34,8 @@ public class TileEntityLaserRef extends AbsOpticzDev {
                         dev.input(wave.waveLen(), wave.power(), wave.phase() - shift, facing.getOpposite());
                     }
                 }
+            } else {
+                this.calcInput(f);
             }
         }
         IOpticzDev.perform(world, pos, facing, this.getOutput(facing));

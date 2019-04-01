@@ -5,3 +5,6 @@ tile.LaserDet.name=探测器
 tile.LaserPbs.name=分光器
 tile.LaserRec.name=接收器
 tile.LaserRef.name=反射器
+
+tile.LaserPbsSoft.name=可拆分光器
+tile.LaserRefSoft.name=可拆反射器

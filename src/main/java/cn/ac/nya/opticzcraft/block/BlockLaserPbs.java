@@ -2,6 +2,7 @@ package cn.ac.nya.opticzcraft.block;
 
 import cn.ac.nya.opticzcraft.api.IOpticzDev;
 import cn.ac.nya.opticzcraft.tileentity.TileEntityLaserPbs;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -14,6 +15,14 @@ import javax.annotation.Nullable;
  * Created by drzzm32 on 2019.3.30.
  */
 public class BlockLaserPbs extends AbsOpticzBlock {
+
+    public static Block getSoft() {
+        return new BlockLaserPbs("LaserPbsSoft", "laser_pbs_soft").setHardness(0.5F);
+    }
+
+    public BlockLaserPbs(String name, String id) {
+        super(name, id, true);
+    }
 
     public BlockLaserPbs() {
         super("LaserPbs", "laser_pbs");

@@ -5,3 +5,6 @@ tile.LaserDet.name=Detector
 tile.LaserPbs.name=Splitter
 tile.LaserRec.name=Receiver
 tile.LaserRef.name=Reflector
+
+tile.LaserPbsSoft.name=Breakable Splitter
+tile.LaserRefSoft.name=Breakable Reflector

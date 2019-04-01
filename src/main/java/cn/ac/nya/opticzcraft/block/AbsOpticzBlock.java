@@ -6,6 +6,7 @@ import cn.ac.nya.opticzcraft.tab.TabLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -36,12 +37,16 @@ public abstract class AbsOpticzBlock extends BlockContainer {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
     public static final PropertyBool LIGHTED = PropertyBool.create("lighted");
 
-    public AbsOpticzBlock(String name, String id) {
-        super(Material.IRON);
+    private AbsOpticzBlock(boolean isSoft) {
+        super(isSoft ? new Material(MapColor.IRON) : Material.IRON);
+    }
+
+    public AbsOpticzBlock(String name, String id, boolean isSoft) {
+        this(isSoft);
         setUnlocalizedName(name);
         setRegistryName(opticzCraft.MODID, id);
-        setHardness(2.0F);
-        setResistance(blockHardness * 5.0F);
+        setHardness(-1.0F);
+        setResistance(10.0F);
         setSoundType(SoundType.METAL);
         setCreativeTab(TabLoader.opticzCraft);
 
@@ -49,6 +54,10 @@ public abstract class AbsOpticzBlock extends BlockContainer {
                 .withProperty(FACING, EnumFacing.UP)
                 .withProperty(LIGHTED, false)
         );
+    }
+
+    public AbsOpticzBlock(String name, String id) {
+        this(name, id, false);
     }
 
     @Nullable

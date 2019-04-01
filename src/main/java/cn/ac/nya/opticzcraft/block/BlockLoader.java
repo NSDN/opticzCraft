@@ -70,6 +70,8 @@ public class BlockLoader {
         blocks.add(new BlockLaserPbs());
         blocks.add(new BlockLaserRec());
         blocks.add(new BlockLaserRef());
+        blocks.add(BlockLaserPbs.getSoft());
+        blocks.add(BlockLaserRef.getSoft());
     }
 
 }

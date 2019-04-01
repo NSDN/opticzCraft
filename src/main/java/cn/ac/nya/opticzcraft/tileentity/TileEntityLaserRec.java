@@ -15,7 +15,9 @@ public class TileEntityLaserRec extends AbsOpticzDev {
 
     @Override
     public void tick(EnumFacing facing) {
-
+        Face face = this.getInputFace(facing);
+        if (face.isEmpty())
+            this.calcInput(facing);
     }
 
     public float powerLimit = LASER_DEFAULT_POWER;

@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.thewdj.optics.ILightBeam;
 import org.thewdj.optics.IOpticalDevice;
 
 import java.util.List;
@@ -230,6 +231,10 @@ public interface IOpticzDev extends IOpticalDevice {
             }
 
             IBlockState state = world.getBlockState(offset);
+            Block block = state.getBlock();
+
+            if (block instanceof ILightBeam) continue;
+
             if (state.getMaterial().getCanBurn()) {
                 return offset.subtract(pos);
             }
@@ -255,6 +260,10 @@ public interface IOpticzDev extends IOpticalDevice {
             }
 
             IBlockState state = world.getBlockState(offset);
+            Block block = state.getBlock();
+
+            if (block instanceof ILightBeam) continue;
+
             if (state.getMaterial().getCanBurn()) {
                 if (power >= LASER_HURT_BLOCK_GATE) {
                     offset = offset.offset(facing.getOpposite());
