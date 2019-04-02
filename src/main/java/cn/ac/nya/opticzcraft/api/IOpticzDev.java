@@ -238,7 +238,7 @@ public interface IOpticzDev extends IOpticalDevice {
             if (state.getMaterial().getCanBurn()) {
                 return offset.subtract(pos);
             }
-            if (!state.isTranslucent()) {
+            if (state.getMaterial().blocksLight()) {
                 return offset.subtract(pos);
             }
         }
@@ -272,7 +272,7 @@ public interface IOpticzDev extends IOpticalDevice {
                 }
                 return;
             }
-            if (!state.isTranslucent()) {
+            if (state.getMaterial().blocksLight()) {
                 return;
             }
         }

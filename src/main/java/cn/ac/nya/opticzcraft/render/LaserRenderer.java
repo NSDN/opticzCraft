@@ -30,7 +30,7 @@ public class LaserRenderer extends AbsTESR {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
 
-        GlStateManager.pushAttrib();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
@@ -41,7 +41,9 @@ public class LaserRenderer extends AbsTESR {
 
         render(te, x, y, z);
 
-        GlStateManager.popAttrib();
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopAttrib();
 
         GL11.glPopMatrix();
     }
