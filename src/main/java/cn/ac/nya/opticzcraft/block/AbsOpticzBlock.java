@@ -71,7 +71,7 @@ public abstract class AbsOpticzBlock extends BlockContainer {
 
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return state.getValue(LIGHTED) ? 1 : 0;
+        return state.getValue(LIGHTED) ? 15 : 0;
     }
 
     @Override

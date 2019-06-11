@@ -36,13 +36,14 @@ public class LaserRenderer extends AbsTESR {
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glLineWidth(2.0F);
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        //GL11.glLineWidth(2.0F);
+        //GL11.glEnable(GL11.GL_LINE_SMOOTH);
 
         render(te, x, y, z);
 
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glPopAttrib();
 
         GL11.glPopMatrix();
@@ -55,18 +56,83 @@ public class LaserRenderer extends AbsTESR {
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
-            buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 
+            final double radius = 0.0625 / 2;
             for (EnumFacing facing : EnumFacing.VALUES) {
                 Vec3i veci = dev.getOutpoint(facing);
                 if (veci != null) {
                     IOpticzDev.Color4 color = dev.colorOf(facing);
-                    buffer.pos(0, 0, 0).color(color.r, color.g, color.b, color.a).endVertex();
-                    buffer.pos(veci.getX(), veci.getY(), veci.getZ()).color(color.r, color.g, color.b, color.a).endVertex();
+                    putLight(veci, radius, buffer, color);
                 }
             }
 
             tessellator.draw();
+        }
+    }
+
+    private void putLight(Vec3i vec3i, double radius, BufferBuilder buffer, IOpticzDev.Color4 color) {
+        int x = vec3i.getX(), y = vec3i.getY(), z = vec3i.getZ();
+        if (x != 0 && y == 0 && z == 0) {
+            buffer.pos(0, 0 + radius, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y + radius, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y + radius, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0, 0 + radius, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0, 0 + radius, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y + radius, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y - radius, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0, 0 - radius, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0, 0 - radius, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y - radius, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y - radius, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0, 0 - radius, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0, 0 - radius, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y - radius, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x, y + radius, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0, 0 + radius, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+        } else if (x == 0 && y != 0 && z == 0) {
+            buffer.pos(0 + radius, 0, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 + radius, 0, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 + radius, 0, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 - radius, 0, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 - radius, 0, 0 - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y, z - radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 - radius, 0, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 - radius, 0, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y, z + radius).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 + radius, 0, 0 + radius).color(color.r, color.g, color.b, color.a).endVertex();
+        } else if (x == 0 && y == 0 && z != 0) {
+            buffer.pos(0 + radius, 0 + radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y + radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y - radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 + radius, 0 - radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 + radius, 0 - radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y - radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y - radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 - radius, 0 - radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 - radius, 0 - radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y - radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y + radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 - radius, 0 + radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+
+            buffer.pos(0 - radius, 0 + radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x - radius, y + radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(x + radius, y + radius, z).color(color.r, color.g, color.b, color.a).endVertex();
+            buffer.pos(0 + radius, 0 + radius, 0).color(color.r, color.g, color.b, color.a).endVertex();
         }
     }
 
