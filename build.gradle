@@ -1,0 +1,17 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = providers.gradleProperty('neoforge_version').get()
+    parchment {
+        minecraftVersion = providers.gradleProperty('parchment_minecraft').get()
+        mappingsVersion = providers.gradleProperty('parchment_mappings').get()
+    }
+}
+
+dependencies {
+    api project(':core')
+    api project(':nyasamalib')
+    api project(':nyasamaoptics')
+}

@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "opticzcraft"
+version = "3.0.0"
+displayName = "opticzCraft"
+authors = "drzzm32"
+description = '''opticzCraft mod.'''
+
+[[dependencies.opticzcraft]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.opticzcraft]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.opticzcraft]]
+modId = "nyasamalib"
+type = "required"
+versionRange = "[3.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.opticzcraft]]
+modId = "nyasamaoptics"
+type = "required"
+versionRange = "[3.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
