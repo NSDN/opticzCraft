@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.thewdj.optics.ILightBeam;
-import org.thewdj.optics.IOpticalDevice;
+import cn.ac.nya.optics.ILightBeam;
+import cn.ac.nya.optics.IOpticalDevice;
 
 import java.util.List;
 
