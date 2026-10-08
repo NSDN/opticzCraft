@@ -39,6 +39,17 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  */
 public final class OpticzEntities {
 
+    /**
+     * Entity tracking range in <b>chunks</b>.
+     *
+     * <p>1.12.2 expressed this in blocks (256). 1.21.1 measures it in chunks and the chunk map
+     * multiplies by 16 again, so copying 256 across would give a 4096-block radius. 256 blocks / 16
+     * = 16 chunks restores the original intent. Found by the railway W4 agent, who hit the same
+     * unit change in RailwayEntities.</p>
+     */
+    public static final int TRACKING_RANGE_CHUNKS = 16;
+
+
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(Registries.ENTITY_TYPE, opticzCraft.MODID);
 
@@ -58,7 +69,7 @@ public final class OpticzEntities {
             ENTITIES.register("throw", () -> EntityType.Builder
                     .<EntityThrow>of(EntityThrow::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
-                    .clientTrackingRange(256)
+                    .clientTrackingRange(TRACKING_RANGE_CHUNKS)
                     .updateInterval(3)
                     .build(opticzCraft.MODID + ":throw"));
 
@@ -70,7 +81,7 @@ public final class OpticzEntities {
             ENTITIES.register("arrow", () -> EntityType.Builder
                     .<EntityArrow>of(EntityArrow::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
-                    .clientTrackingRange(256)
+                    .clientTrackingRange(TRACKING_RANGE_CHUNKS)
                     .updateInterval(3)
                     .build(opticzCraft.MODID + ":arrow"));
 
