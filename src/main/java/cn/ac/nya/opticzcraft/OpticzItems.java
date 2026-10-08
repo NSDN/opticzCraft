@@ -1,8 +1,10 @@
 package cn.ac.nya.opticzcraft;
 
+import cn.ac.nya.opticzcraft.item.ItemArrow;
 import cn.ac.nya.opticzcraft.item.ItemBooster;
 import cn.ac.nya.opticzcraft.item.ItemBurner;
 import cn.ac.nya.opticzcraft.item.ItemLogo;
+import cn.ac.nya.opticzcraft.item.ItemThrow;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -54,8 +56,22 @@ public final class OpticzItems {
     public static final DeferredItem<ItemBurner> BURNER =
             ITEMS.registerItem("burner", ItemBurner::new, new Item.Properties().durability(1024));
 
+    /**
+     * 1.12.2 {@code ItemLoader.itemThrow}: {@code new ItemThrow()} with {@code setMaxStackSize(42)} --
+     * the NSF Pressure Bomb, and the stack {@code EntityThrow} renders itself as.
+     */
+    public static final DeferredItem<ItemThrow> THROW =
+            ITEMS.registerItem("throw", ItemThrow::new, new Item.Properties().stacksTo(42));
+
+    /**
+     * 1.12.2 {@code ItemLoader.itemArrow}: {@code new ItemArrow()} with the default stack size -- the
+     * cluster missile the mod's bow fires, and the stack {@code EntityArrow} gives back on pickup.
+     */
+    public static final DeferredItem<ItemArrow> ARROW =
+            ITEMS.registerItem("arrow", ItemArrow::new, new Item.Properties());
+
     // The 1.12.2 ItemLoader fields kept for the runtime lookups that survive the port:
-    //   public static ItemThrow itemThrow;
-    //   public static ItemArrow itemArrow;
-    // They are declared by the classes that own them (ItemThrow / ItemArrow) once those are ported.
+    //   public static ItemThrow itemThrow;   -> THROW
+    //   public static ItemArrow itemArrow;   -> ARROW
+    // The two entity lookup sites now read these holders (ItemLoader gone, OpticzItems is the table).
 }

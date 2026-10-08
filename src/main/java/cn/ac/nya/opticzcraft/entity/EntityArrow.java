@@ -45,7 +45,11 @@ import net.minecraft.world.phys.Vec3;
  *   <li>{@code world.spawnEntity(entityThrow)} becomes {@code level().addFreshEntity(entityThrow)} and
  *       {@code setDead()} becomes {@code discard()}.</li>
  *   <li>{@code getArrowStack()} becomes {@link #getDefaultPickupItem()} -- the modern hook that names
- *       the stack a player picks up, which is what {@code getArrowStack} fed in 1.12.2.</li>
+ *       the stack a player picks up, which is what {@code getArrowStack} fed in 1.12.2. The pickup
+ *       stack has to be supplied twice: {@code AbstractArrow}'s own constructor copies its
+ *       {@code pickupItemStack} argument immediately (verified with javap), so the constructors below
+ *       pass {@code new ItemStack(OpticzItems.ARROW.get())} where 1.12.2 passed nothing, and the hook
+ *       is the fallback the vanilla {@code AbstractArrow} path uses for an empty argument.</li>
  *   <li>{@code isImmuneToExplosions()} has no 1.21.1 equivalent; as in {@link EntityThrow}, the direct
  *       successor is {@link #ignoreExplosion(Explosion)}, with {@link #isInvulnerableTo} covering the
  *       manual {@code BOOM} path that never builds an {@code Explosion}.</li>
@@ -71,7 +75,7 @@ public class EntityArrow extends AbstractArrow {
 
     /** 1.12.2 {@code EntityArrow(World, EntityLivingBase)}; the pickup stack is set by the caller. */
     public EntityArrow(EntityType<? extends EntityArrow> type, LivingEntity shooter, Level level) {
-        super(type, shooter, level, null);
+        super(type, shooter, level, new ItemStack(OpticzItems.ARROW.get()), null);
     }
 
     /** 1.12.2 {@code EntityArrow(World, double, double, double)}. */

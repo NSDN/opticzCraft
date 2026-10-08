@@ -27,10 +27,12 @@ import org.slf4j.LoggerFactory;
  *       {@link Logger} -- the same SLF4J facade the other v3 modules use.</li>
  * </ul>
  *
- * <p>Still pending (tracked in the module report, not silently dropped): {@code event.EventRegister}
- * and {@code event.EventsHandler} (the event-bus wiring and the "thanks for using opticzCraft" login
- * message), {@code network.NetworkWrapper} and its two handlers, {@code entity.*}, and
- * {@code render.*}.</p>
+ * <p>Still pending (tracked in the module report, not silently dropped): {@code proxy.*} (the three
+ * 1.12.2 proxies only did the wiring that now lives in this constructor, so they have no successor
+ * class), {@code event.EventRegister} (its five registrations became the {@code DeferredRegister}
+ * tables, and {@code EventsHandler} moved to {@code @EventBusSubscriber}), and {@code render.*}, which
+ * waits on the {@code assets/opticzcraft} migration (item models and {@code textures/entity/arrow.png}
+ * are not in this module yet).</p>
  */
 @Mod(opticzCraft.MODID)
 public class opticzCraft {
@@ -46,6 +48,7 @@ public class opticzCraft {
         OpticzBlocks.register(modBus);
         OpticzBlockEntities.register(modBus);
         OpticzItems.register(modBus);
+        OpticzEntities.register(modBus);
         OpticzCreativeTab.register(modBus);
 
         LOGGER.info("[{}] loading on {} (NeoForge, MC 1.21.1)", MODID, dist);
