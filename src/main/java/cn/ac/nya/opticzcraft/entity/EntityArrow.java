@@ -73,7 +73,11 @@ public class EntityArrow extends AbstractArrow {
         super(type, level);
     }
 
-    /** 1.12.2 {@code EntityArrow(World, EntityLivingBase)}; the pickup stack is set by the caller. */
+    /**
+     * 1.12.2 {@code EntityArrow(World, EntityLivingBase)}. The pickup stack is passed here because
+     * {@code AbstractArrow}'s constructor copies it immediately and the 1.12.2 form had no such
+     * argument to forward.
+     */
     public EntityArrow(EntityType<? extends EntityArrow> type, LivingEntity shooter, Level level) {
         super(type, shooter, level, new ItemStack(OpticzItems.ARROW.get()), null);
     }
