@@ -28,10 +28,14 @@ import java.util.List;
  *       and {@code new AABB(BlockPos)} is the exact equivalent box for one block position.</li>
  *   <li>{@code world.getEntitiesWithinAABB(Entity.class, aabb)} to
  *       {@code world.getEntitiesOfClass(Entity.class, aabb)} (same bounding-box query, renamed).</li>
- *   <li>{@code state.getMaterial().getCanBurn()} to {@link BlockState#ignitedByLava()} and
+ *   <li>{@code state.getMaterial().getCanBurn()} to
+ *       {@code state.ignitedByLava(level, pos, face)} and
  *       {@code state.getMaterial().blocksLight()} to {@link BlockState#canOcclude()}. {@code Material}
  *       does not exist in 1.21.1 at all (verified with javap: {@code net.minecraft.world.level.material.Material}
- *       is absent), so the two flags the old code actually read are used directly.</li>
+ *       is absent), so the two flags the old code actually read are used directly. The deprecated
+ *       no-argument {@code ignitedByLava()} is avoided in favour of NeoForge's position-aware
+ *       {@code IBlockStateExtension#ignitedByLava(BlockGetter, BlockPos, Direction)}; the face passed
+ *       is the one looking back along the beam, which is exactly the face the beam strikes.</li>
  *   <li>{@code state.getMaterial().isReplaceable()} to {@link BlockState#canBeReplaced()},
  *       {@code entity.setFire(n)} to {@link Entity#igniteForSeconds(float)} (both are
  *       {@code n * 20} fire ticks), {@code world.setBlockState} to
@@ -258,7 +262,7 @@ public interface IOpticzDev extends IOpticalDevice {
 
             if (block instanceof ILightBeam) continue;
 
-            if (state.ignitedByLava()) {
+            if (state.ignitedByLava(world, offset, facing.getOpposite())) {
                 return offset.subtract(pos);
             }
             if (state.canOcclude()) {
@@ -287,7 +291,7 @@ public interface IOpticzDev extends IOpticalDevice {
 
             if (block instanceof ILightBeam) continue;
 
-            if (state.ignitedByLava()) {
+            if (state.ignitedByLava(world, offset, facing.getOpposite())) {
                 if (power >= LASER_HURT_BLOCK_GATE) {
                     offset = offset.relative(facing.getOpposite());
                     if (world.getBlockState(offset).canBeReplaced())
