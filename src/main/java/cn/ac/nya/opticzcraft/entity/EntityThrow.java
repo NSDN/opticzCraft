@@ -67,6 +67,11 @@ public class EntityThrow extends ThrowableItemProjectile {
         super(type, thrower, level);
     }
 
+    /** 1.12.2 {@code EntityThrow(World, EntityLivingBase)}. */
+    public EntityThrow(Level level, LivingEntity thrower) {
+        this(OpticzEntities.THROW.get(), thrower, level);
+    }
+
     /** 1.12.2 {@code EntityThrow(World, EntityLivingBase, Vec3d)}. */
     public EntityThrow(Level level, LivingEntity thrower, Vec3 pos) {
         this(OpticzEntities.THROW.get(), thrower, level);
