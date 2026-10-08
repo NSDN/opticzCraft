@@ -102,7 +102,7 @@ public class ItemBurner extends PickaxeItem implements IFlyEquipment {
                 if (FLY.canFly(player)) {
                     Vec3 vec = player.getDeltaMovement();
                     Vec3 inv = vec.normalize().scale(-1);
-                    Vec3 ext = BOOM.vVec(vec).scale(entity.random.nextGaussian() * 0.05D);
+                    Vec3 ext = BOOM.vVec(vec).scale(entity.getRandom().nextGaussian() * 0.05D);
                     vec = vec.scale(-0.5).add(ext);
                     world.addParticle(ParticleTypes.FIREWORK,
                             player.getX() + inv.x,

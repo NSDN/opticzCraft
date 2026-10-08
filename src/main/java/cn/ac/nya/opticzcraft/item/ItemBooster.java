@@ -110,7 +110,7 @@ public class ItemBooster extends Item implements IFlyEquipment {
                 if (FLY.canFly(player)) {
                     Vec3 vec = player.getDeltaMovement();
                     Vec3 inv = vec.normalize().scale(-1);
-                    Vec3 ext = BOOM.vVec(vec).scale(entity.random.nextGaussian() * 0.05D);
+                    Vec3 ext = BOOM.vVec(vec).scale(entity.getRandom().nextGaussian() * 0.05D);
                     vec = vec.scale(-0.5).add(ext);
                     world.addParticle(ParticleTypes.FIREWORK,
                             player.getX() + inv.x,
@@ -136,8 +136,13 @@ public class ItemBooster extends Item implements IFlyEquipment {
         return true;
     }
 
+    /**
+     * 1.12.2 {@code getItemEnchantability}. NeoForge deprecates the stack-less {@code getEnchantmentValue()}
+     * in favour of this ItemStack-sensitive overload, so the modern hook is used even though the value
+     * does not depend on the stack.
+     */
     @Override
-    public int getEnchantmentValue() {
+    public int getEnchantmentValue(ItemStack stack) {
         return this.toolMaterial.getEnchantmentValue();
     }
 
