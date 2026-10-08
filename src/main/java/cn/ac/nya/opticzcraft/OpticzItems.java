@@ -1,5 +1,7 @@
 package cn.ac.nya.opticzcraft;
 
+import cn.ac.nya.opticzcraft.item.ItemBooster;
+import cn.ac.nya.opticzcraft.item.ItemBurner;
 import cn.ac.nya.opticzcraft.item.ItemLogo;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -39,6 +41,18 @@ public final class OpticzItems {
     /** 1.12.2 {@code ItemLoader.logo}: stack size 1, and the opticzCraft creative tab's icon. */
     public static final DeferredItem<ItemLogo> LOGO =
             ITEMS.registerItem("logo", ItemLogo::new, new Item.Properties().stacksTo(1));
+
+    /**
+     * 1.12.2 {@code ItemLoader}: {@code new ItemBooster()} with
+     * {@code setMaxDamage(toolMaterial.getMaxUses())} -- iron's 250 uses.
+     */
+    public static final DeferredItem<ItemBooster> BOOSTER =
+            ITEMS.registerItem("booster", ItemBooster::new,
+                    new Item.Properties().stacksTo(1).durability(250));
+
+    /** 1.12.2 {@code ItemLoader}: {@code new ItemBurner()} with {@code setMaxDamage(1024)}. */
+    public static final DeferredItem<ItemBurner> BURNER =
+            ITEMS.registerItem("burner", ItemBurner::new, new Item.Properties().durability(1024));
 
     // The 1.12.2 ItemLoader fields kept for the runtime lookups that survive the port:
     //   public static ItemThrow itemThrow;
