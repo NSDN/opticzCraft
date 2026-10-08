@@ -1,0 +1,14 @@
+{
+  "block.opticzcraft.laser_jet": "激光器",
+  "block.opticzcraft.laser_det": "探测器",
+  "block.opticzcraft.laser_pbs": "分光器",
+  "block.opticzcraft.laser_rec": "接收器",
+  "block.opticzcraft.laser_ref": "反射器",
+  "block.opticzcraft.laser_pbs_soft": "可拆分光器",
+  "block.opticzcraft.laser_ref_soft": "可拆反射器",
+  "item.opticzcraft.arrow": "喵玉军工 集束导弹",
+  "item.opticzcraft.throw": "喵玉军工 温压弹",
+  "item.opticzcraft.booster": "喵玉航天 推进器一型",
+  "item.opticzcraft.burner": "喵玉航天 铝热推进器",
+  "itemGroup.opticzCraft": "opticzCraft"
+}

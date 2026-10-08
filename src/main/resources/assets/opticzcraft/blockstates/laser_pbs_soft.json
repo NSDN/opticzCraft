@@ -1,0 +1,74 @@
+{
+  "variants": {
+    "facing=north,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft"
+      }
+    ],
+    "facing=north,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft"
+      }
+    ],
+    "facing=east,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 90
+      }
+    ],
+    "facing=east,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 90
+      }
+    ],
+    "facing=south,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 180
+      }
+    ],
+    "facing=south,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 180
+      }
+    ],
+    "facing=west,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 270
+      }
+    ],
+    "facing=west,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "y": 270
+      }
+    ],
+    "facing=up,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "x": 270
+      }
+    ],
+    "facing=up,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "x": 270
+      }
+    ],
+    "facing=down,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "x": 90
+      }
+    ],
+    "facing=down,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_pbs_soft",
+        "x": 90
+      }
+    ]
+  }
+}

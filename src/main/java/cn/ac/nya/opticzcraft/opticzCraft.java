@@ -29,10 +29,15 @@ import org.slf4j.LoggerFactory;
  *
  * <p>Still pending (tracked in the module report, not silently dropped): {@code proxy.*} (the three
  * 1.12.2 proxies only did the wiring that now lives in this constructor, so they have no successor
- * class), {@code event.EventRegister} (its five registrations became the {@code DeferredRegister}
- * tables, and {@code EventsHandler} moved to {@code @EventBusSubscriber}), and {@code render.*}, which
- * waits on the {@code assets/opticzcraft} migration (item models and {@code textures/entity/arrow.png}
- * are not in this module yet).</p>
+ * class) and {@code event.EventRegister} (its five registrations became the {@code DeferredRegister}
+ * tables, and {@code EventsHandler} moved to {@code @EventBusSubscriber}).</p>
+ *
+ * <p>{@code render.*} has since landed: the four 1.12.2 render classes became
+ * {@code render/AbsOpticzTESR}, {@code render/LaserRenderer}, {@code render/ArrowRenderer} and
+ * {@code render/ThrowRenderer}, and their client-side binding -- the 1.12.2
+ * {@code ClientProxy} {@code ClientRegistry}/{@code RenderingRegistry} calls -- is
+ * {@link OpticzRenderers}, a {@code Dist.CLIENT} {@code @EventBusSubscriber} that FML discovers by
+ * annotation. Nothing has to be registered from this constructor for them.</p>
  */
 @Mod(opticzCraft.MODID)
 public class opticzCraft {

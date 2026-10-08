@@ -1,0 +1,14 @@
+{
+  "block.opticzcraft.laser_jet": "Source",
+  "block.opticzcraft.laser_det": "Detector",
+  "block.opticzcraft.laser_pbs": "Splitter",
+  "block.opticzcraft.laser_rec": "Receiver",
+  "block.opticzcraft.laser_ref": "Reflector",
+  "block.opticzcraft.laser_pbs_soft": "Breakable Splitter",
+  "block.opticzcraft.laser_ref_soft": "Breakable Reflector",
+  "item.opticzcraft.arrow": "NSF Cluster Missile",
+  "item.opticzcraft.throw": "NSF Pressure Bomb",
+  "item.opticzcraft.booster": "NSA Booster MkI",
+  "item.opticzcraft.burner": "NSF Thermit Booster",
+  "itemGroup.opticzCraft": "opticzCraft"
+}

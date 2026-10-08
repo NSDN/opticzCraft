@@ -1,0 +1,78 @@
+{
+  "variants": {
+    "facing=north,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 90
+      }
+    ],
+    "facing=north,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 90
+      }
+    ],
+    "facing=east,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "facing=east,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "facing=south,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 270
+      }
+    ],
+    "facing=south,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 270
+      }
+    ],
+    "facing=west,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 270,
+        "y": 90
+      }
+    ],
+    "facing=west,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 270,
+        "y": 90
+      }
+    ],
+    "facing=up,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det"
+      }
+    ],
+    "facing=up,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det"
+      }
+    ],
+    "facing=down,lighted=true": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 180
+      }
+    ],
+    "facing=down,lighted=false": [
+      {
+        "model": "opticzcraft:block/laser_det",
+        "x": 180
+      }
+    ]
+  }
+}
