@@ -9,7 +9,6 @@ neoForge {
 }
 
 dependencies {
-    api project(':core')
     api project(':nyasamalib')
     api project(':nyasamaoptics')
 }

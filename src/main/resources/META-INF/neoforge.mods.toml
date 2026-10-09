@@ -24,13 +24,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.opticzcraft]]
-modId = "core"
-type = "required"
-versionRange = "[3.0.0,)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.opticzcraft]]
 modId = "nyasamalib"
 type = "required"
 versionRange = "[3.0.0,)"
