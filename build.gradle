@@ -1,4 +1,67 @@
+// opticzCraft: one of the six sibling mods (directory name opticzCraft, artifact opticzCraft).
+//
+// This file is written in DUAL MODE on purpose (see docs/03-REPO-STRATEGY.md section 5.6):
+//   * inside the monorepo  -> `api project(':nyasamalib')` + `api project(':nyasamaoptics')`
+//   * standalone mirror    -> the same two modules as `cn.ac.nya:...:<mod_version>` from mavenLocal
+// `git subtree split --prefix=opticzCraft` produces a directory that must build on its own, and
+// this is the only switch that makes the two shapes share one file.
+//
+// The artifactId keeps the upstream spelling `opticzCraft`; the modid inside neoforge.mods.toml
+// stays lowercase `opticzcraft`. Publishing under a different artifactId would make the standalone
+// mirror's own coordinate differ from its directory name for no benefit.
+//
+// The MDG resolution travels through the legacy buildscript classpath, exactly like the root
+// build.gradle and nyasamalib/build.gradle do. In the monorepo the root already puts MDG on the
+// classpath, so the dependency is satisfied by the buildscript of the root project and is a no-op
+// here. Standalone it is what makes `apply plugin` work at all: the plugin MARKER lives on the
+// (unreachable) Gradle Plugin Portal, while the implementation artifact
+// net.neoforged:moddev-gradle:2.0.148 is on the NeoForged maven.
+//
+// NOTE: keep .gradle files ASCII-only (platform default charset is GBK on this machine).
+buildscript {
+    repositories {
+        maven { name = 'NeoForged'; url = 'https://maven.neoforged.net/releases' }
+        maven { name = 'AliyunGradlePlugin'; url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { name = 'AliyunPublic'; url = 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.neoforged:moddev-gradle:2.0.148'
+    }
+}
+
+// java-library supplies the 'test' source set and the test task. In the monorepo the root build.gradle applies it to every subproject; standalone it must be applied here, otherwise the test task runs with 0 tests (MEASURED 2026-10-11: the standalone nyasamalib build reported 0 tests while the monorepo ran the 4+3 regression tests).
+apply plugin: 'java-library'
+
 apply plugin: 'net.neoforged.moddev'
+
+// Pin the produced artifact name. base.archivesName defaults to the Gradle project name, which is
+// 'nyasamalib' inside the monorepo but 'NyaSamaLib' in the standalone repository (the mirror's
+// settings.gradle rootProject.name carries the upstream project name), so the same source produced
+// NyaSamaLib-3.0.0.jar standalone and nyasamalib-3.0.0.jar in the monorepo. The module id is what
+// the distribution and the publish coordinates use, so it wins.
+base {
+    archivesName = 'opticzCraft'
+}
+
+// ---------------------------------------------------------------------------
+// group / version, set here instead of relying on the monorepo root build.gradle.
+//
+// In the monorepo the root script does this for every subproject
+//   allprojects { group = mod_group ; version = mod_version }
+// but the standalone repository has no root build.gradle of its own: the module IS the root
+// project. Without this block a standalone build produced NyaSamaLib.jar / NyaSamaBuilding.jar
+// instead of nyasamalib-3.0.0.jar / nyasamabuilding-3.0.0.jar and published
+// cn.ac.nya:nyasamabuilding:unspecified (MEASURED 2026-10-11, first standalone pass).
+//
+// Read from this module's own gradle.properties, which the mirror scaffold supplies with the same
+// version lock as the monorepo. Local defs are used because providers.gradleProperty is not
+// available that early in the script.
+// ---------------------------------------------------------------------------
+def nyaGroup = providers.gradleProperty('mod_group').getOrElse('cn.ac.nya')
+def nyaModVersion = providers.gradleProperty('mod_version').getOrElse('3.0.0')
+group = nyaGroup
+version = nyaModVersion
 
 neoForge {
     version = providers.gradleProperty('neoforge_version').get()
@@ -8,7 +71,84 @@ neoForge {
     }
 }
 
+// No `repositories { }` block here on purpose: a project-level repositories block switches OFF
+// MDG's settings-level repository injection. The settings file of each mirror declares mavenLocal
+// in dependencyResolutionManagement instead.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
+// Dual-mode switch. Inside the monorepo the sibling projects exist; standalone they do not, and the
+// module is its own root project, so the published artifacts are used instead.
+// The monorepo test is the root project's NAME rather than findProject(':...'): every module of
+// the monorepo can see :nyasamalib there, so existence alone cannot tell "I am a subproject of the
+// monorepo" from "I am a standalone repo that happens to have a sibling directory".
+def inMonorepo = rootProject.name == 'NyaSamaCompletePack'
+def nyaVersion = providers.gradleProperty('mod_version').get()
+
 dependencies {
-    api project(':nyasamalib')
-    api project(':nyasamaoptics')
+    if (inMonorepo) {
+        api project(':nyasamalib')
+        api project(':nyasamaoptics')
+    } else {
+        // mavenLocal() is declared HERE, in the project script, and not only in the mirror's
+        // settings.gradle. MEASURED 2026-10-11: a settings-level
+        // dependencyResolutionManagement { repositories { mavenLocal() } } is NOT enough. MDG
+        // injects its own PROJECT-level repositories (Mojang Meta / Mojang Minecraft Libraries /
+        // NeoForged Releases), and project-level repositories SUPPRESS the settings-level ones
+        // outright, so the build went to https://maven.neoforged.net for
+        // cn.ac.nya:nyasamalib:3.0.0 and died on an unreachable host. In the monorepo this branch
+        // never runs, no project-level repository is declared, and MDG's settings-level injection
+        // is untouched.
+        repositories {
+            mavenLocal()
+        }
+        api "cn.ac.nya:nyasamalib:${nyaVersion}"
+        api "cn.ac.nya:nyasamaoptics:${nyaVersion}"
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Publish this module's mod jar so that the other standalone mirrors can depend on
+// cn.ac.nya:opticzCraft:<mod_version> from mavenLocal.
+//
+// Two deliberate choices:
+//   * `artifact <jar task>` plus an explicit `pom.packaging = 'jar'`. Reaching for
+//     `from components.java` inside the monorepo would also drag the sibling projects into the
+//     POM as remote coordinates, which mavenLocal cannot satisfy. The jar task alone keeps the
+//     publication a single self-contained file.
+//   * no archiveClassifier: a classifier leaks into the published FILENAME and then the plain
+//     coordinate cn.ac.nya:opticzCraft:<version> would not resolve.
+// ---------------------------------------------------------------------------
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact tasks.named('jar')
+            pom.packaging = 'jar'
+            groupId = 'cn.ac.nya'
+            artifactId = 'opticzCraft'
+            version = project.version
+        }
+    }
+}
+
+// Gradle cannot infer that publishing this explicit `artifact <jar task>` needs `jar` to have run
+// (it only infers that for a `components.java` publication), so wire the dependency up by hand.
+// Without it: "uses this output of task ':X:jar' without declaring an explicit or implicit
+// dependency". Applies to mavenLocal and to any file/GitHub remote the same way.
+tasks.configureEach {
+    if (name.startsWith('publish') && name.contains('PublicationToMaven')) {
+        dependsOn tasks.named('jar')
+    }
 }
